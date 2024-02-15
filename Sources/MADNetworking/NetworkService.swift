@@ -43,19 +43,6 @@ public enum NetworkError: Error {
     case unexpectedStatusCode(Int) // Для неожиданных статусных кодов
 }
 
-public struct NetworkServiceConfiguration {
-    
-    public let storedToken: () -> String?
-    public let authRequest: () -> any (Requestable & DecodableResponse)
-    public let tokenFromResponse: (Decodable) -> String?
-    
-    public let decoder: JSONDecoder
-    
-    public let urlSessionConfiguration: URLSessionConfiguration
-    
-    public let log: (LogOutput) -> Void
-}
-
 public class NetworkService {
     
     private let tokenManager: TokenManager
