@@ -3,7 +3,7 @@ import Foundation
 public struct NetworkServiceConfiguration {
     
     public let storedToken: () -> String?
-    public let authRequest: () -> any (Requestable & DecodableResponse)
+    public let authRequest: () -> (any DecodableResponse & Requestable)?
     public let tokenFromResponse: (Decodable) -> String?
     
     public let decoder: JSONDecoder

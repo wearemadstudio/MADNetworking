@@ -18,7 +18,7 @@ class TokenManager {
     // MARK: - Private properties
     
     private let storedToken: () -> String?
-    private let authRequest: () -> any (Requestable & DecodableResponse)
+    private let authRequest: () -> (any Requestable & DecodableResponse)?
     private let tokenFromResponse: (Decodable) -> String?
     
     private var tokenState = TokenState()
@@ -29,7 +29,7 @@ class TokenManager {
     
     init(
         storedToken: @escaping () -> String?,
-        authRequest: @escaping () -> any (Requestable & DecodableResponse),
+        authRequest: @escaping () -> (any Requestable & DecodableResponse)?,
         tokenFromResponse: @escaping (Decodable) -> String?
     ) {
         self.storedToken = storedToken
@@ -59,9 +59,8 @@ class TokenManager {
             return try await task.value
         }
         let refreshTask = Task<String?, Error> {
-            let request = authRequest()
             var token: String?
-            if let response = try await networkService?.send(request: request, unauthorized: true) {
+            if let request = authRequest(), let response = try await networkService?.send(request: request, unauthorized: true) {
                 token = tokenFromResponse(response)
             }
             await tokenState.update(token: token)
