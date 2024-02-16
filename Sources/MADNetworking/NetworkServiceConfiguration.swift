@@ -14,7 +14,7 @@ public struct NetworkServiceConfiguration {
     
     public init(
         storedToken: @escaping () -> String?,
-        authRequest: @escaping () -> any Requestable & DecodableResponse,
+        authRequest: @escaping () -> (any Requestable & DecodableResponse)?,
         tokenFromResponse: @escaping (Decodable) -> String?,
         decoder: JSONDecoder,
         urlSessionConfiguration: URLSessionConfiguration,
