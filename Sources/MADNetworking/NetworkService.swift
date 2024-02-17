@@ -60,7 +60,7 @@ public class NetworkService {
             authRequest: configuration.authRequest,
             tokenFromResponse: configuration.tokenFromResponse
         )
-        self.urlSession = URLSession(configuration: configuration.urlSessionConfiguration)
+        self.urlSession = URLSession(configuration: configuration.urlSessionConfiguration, delegate: nil, delegateQueue: nil)
         self.decoder = configuration.decoder
         self.log = configuration.log
         
