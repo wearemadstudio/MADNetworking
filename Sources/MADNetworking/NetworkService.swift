@@ -50,6 +50,7 @@ public class NetworkService {
     private let urlSession: URLSession
     private let decoder: JSONDecoder
     private let log: (LogOutput) -> Void
+    private let delegate: URLSessionDataDelegate
     
     public init(
         configuration: NetworkServiceConfiguration
@@ -60,7 +61,8 @@ public class NetworkService {
             authRequest: configuration.authRequest,
             tokenFromResponse: configuration.tokenFromResponse
         )
-        self.urlSession = URLSession(configuration: configuration.urlSessionConfiguration, delegate: nil, delegateQueue: nil)
+        self.delegate = DummyURLSessionDataDelegate()
+        self.urlSession = URLSession(configuration: configuration.urlSessionConfiguration, delegate: delegate, delegateQueue: nil)
         self.decoder = configuration.decoder
         self.log = configuration.log
         
@@ -85,7 +87,7 @@ public class NetworkService {
         prepare(&urlRequest, with: request)
         
         do {
-            let (data, response) = try await urlSession.data(for: urlRequest)
+            let (data, response) = try await urlSession.dataTask(for: urlRequest)
             
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw NetworkError.invalidResponse
