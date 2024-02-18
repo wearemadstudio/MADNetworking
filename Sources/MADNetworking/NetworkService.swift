@@ -35,12 +35,13 @@ public struct LogOutput {
 }
 
 public enum NetworkError: Error, Equatable {
-    case tokenNotFound
-    case invalidResponse
-    case networkingError
-    case clientError(Int)   // Для ошибок 400...499
-    case serverError(Int)   // Для ошибок 500...599
-    case unexpectedStatusCode(Int) // Для неожиданных статусных кодов
+    case tokenNotFound // Request marked as required for auth, but no auth token was provided
+    case invalidResponse // No URL Response
+    case networkingError // Connection issue (no network, etc)
+    case clientError(Int) // 400...499
+    case serverError(Int) // 500...599
+    case unexpectedStatusCode(Int)
+    case cancelled // Request was cancelled. In many cases this should be ignored
 }
 
 public class NetworkService {
@@ -120,9 +121,12 @@ public class NetworkService {
                     error.code == .dataNotAllowed
         {
             throw NetworkError.networkingError
-        } catch {
-            throw error
+        } catch let error as URLError where
+                    error.code == .cancelled
+        {
+            throw NetworkError.cancelled
         }
+        catch { throw error }
     }
         
     private func prepare<T: Requestable>(_ urlRequest: inout URLRequest, with request: T) {
