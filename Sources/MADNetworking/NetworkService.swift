@@ -14,6 +14,10 @@ public protocol Requestable {
     var multipart: MultipartRequest? { get }
 }
 
+extension Requestable {
+    var multipart: MultipartRequest? { nil }
+}
+
 public protocol DecodableResponse {
     associatedtype ResponseType: Decodable
 }

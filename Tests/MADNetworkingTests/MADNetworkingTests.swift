@@ -22,7 +22,6 @@ struct AuthRequest: Requestable & DecodableResponse {
     var method: MADNetworking.HttpMethod { .post }
     var headers: [String : String]? { [:] }
     var parameters: Encodable? { Parameters() }
-    var multipart: MultipartRequest? { nil }
 
     typealias ResponseType = BaseResponseModel<Response>
     
@@ -38,7 +37,6 @@ struct AirportsDetailsRequest: Requestable & DecodableResponse {
     var method: MADNetworking.HttpMethod { .get }
     var headers: [String : String]? { [:] }
     var parameters: Encodable? { EmptyData() }
-    var multipart: MultipartRequest? { nil }
 
     typealias ResponseType = BaseResponseModel<Response>
 }
