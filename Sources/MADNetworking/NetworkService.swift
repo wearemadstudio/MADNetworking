@@ -11,6 +11,7 @@ public protocol Requestable {
     var method: HttpMethod { get }
     var headers: [String: String]? { get }
     var parameters: Encodable? { get }
+    var multipart: MultipartRequest? { get }
 }
 
 public protocol DecodableResponse {
@@ -84,7 +85,10 @@ public class NetworkService {
         if let token {
             urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
-        
+        if let multipart = request.multipart {
+            urlRequest.setValue(multipart.httpContentTypeHeaderValue, forHTTPHeaderField: "Content-Type")
+        }
+
         prepare(&urlRequest, with: request)
         
         do {
@@ -128,7 +132,7 @@ public class NetworkService {
         }
         catch { throw error }
     }
-        
+
     private func prepare<T: Requestable>(_ urlRequest: inout URLRequest, with request: T) {
         switch request.method {
         case .get:
@@ -154,6 +158,8 @@ public class NetworkService {
                     let logMessage = MADNetworking.log("Params encode error: \(error.localizedDescription)", level: .error)
                     log(logMessage)
                 }
+            } else if let multipart = request.multipart?.httpBody {
+                urlRequest.httpBody = multipart
             }
         }
         request.headers?.forEach { urlRequest.setValue($1, forHTTPHeaderField: $0) }

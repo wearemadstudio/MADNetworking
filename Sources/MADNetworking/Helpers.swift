@@ -8,6 +8,17 @@ extension Encodable {
     }
 }
 
+extension Data {
+    mutating func append(
+        _ string: String,
+        encoding: String.Encoding = .utf8
+    ) {
+        guard let data = string.data(using: encoding) else {
+            return
+        }
+        append(data)
+    }
+}
 
 func log(_ log: String, level: LogsLevel) -> LogOutput {
     return LogOutput(
