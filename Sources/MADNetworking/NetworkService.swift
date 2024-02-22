@@ -14,7 +14,7 @@ public protocol Requestable {
     var multipart: MultipartRequest? { get }
 }
 
-extension Requestable {
+public extension Requestable {
     var multipart: MultipartRequest? { nil }
 }
 
