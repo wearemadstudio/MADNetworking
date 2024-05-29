@@ -146,7 +146,9 @@ public class NetworkService {
                     if let dictionary = try parameters.asDictionary() {
                         var urlComponents = URLComponents(url: request.url, resolvingAgainstBaseURL: false)!
                         urlComponents.queryItems = dictionary.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
-                        urlRequest.url = urlComponents.url
+                        if !(urlComponents.queryItems?.isEmpty ?? true) {
+                            urlRequest.url = urlComponents.url
+                        }
                     }
                 } catch {
                     let logMessage = MADNetworking.log("Params encode error: \(error.localizedDescription)", level: .error)
