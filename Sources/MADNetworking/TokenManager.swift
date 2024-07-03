@@ -38,7 +38,7 @@ class TokenManager {
     }
     
     // MARK: - Methods
-    
+
     func getToken() async throws -> String? {
         return try await fetchToken()
     }
@@ -46,7 +46,12 @@ class TokenManager {
     func setNetworkService(_ networkService: NetworkService) {
         self.networkService = networkService
     }
-    
+
+    func forceUpdateToken() async {
+        let token = storedToken()
+        await tokenState.update(token: token)
+    }
+
     private func fetchToken() async throws -> String? {
         if let token = await tokenState.token { // We already have a token
             return token

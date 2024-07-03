@@ -24,7 +24,6 @@ public protocol DecodableResponse {
     associatedtype ResponseType: Decodable
 }
 
-
 public enum LogsLevel {
     case error
     
@@ -75,6 +74,10 @@ public class NetworkService {
         self.log = configuration.log
         
         self.tokenManager.setNetworkService(self)
+    }
+
+    public func forceUpdateToken() async {
+        await tokenManager.forceUpdateToken()
     }
 
     public func send<T: Requestable & DecodableResponse>(request: T, unauthorized: Bool = false) async throws -> T.ResponseType {
