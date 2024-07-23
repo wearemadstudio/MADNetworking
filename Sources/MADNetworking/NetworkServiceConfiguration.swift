@@ -3,7 +3,7 @@ import Foundation
 public struct NetworkServiceConfiguration {
     
     public let storedToken: () -> String?
-    public let authRequest: () -> (any DecodableResponse & Requestable)?
+    public let authRequest: () async -> (any DecodableResponse & Requestable)?
     public let tokenFromResponse: (Decodable) -> String?
     
     public let decoder: JSONDecoder
@@ -14,7 +14,7 @@ public struct NetworkServiceConfiguration {
     
     public init(
         storedToken: @escaping () -> String?,
-        authRequest: @escaping () -> (any Requestable & DecodableResponse)?,
+        authRequest: @escaping () async -> (any Requestable & DecodableResponse)?,
         tokenFromResponse: @escaping (Decodable) -> String?,
         decoder: JSONDecoder,
         urlSessionConfiguration: URLSessionConfiguration,
