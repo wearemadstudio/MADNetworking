@@ -66,7 +66,8 @@ public class NetworkService {
         self.tokenManager = TokenManager(
             storedToken: configuration.storedToken,
             authRequest: configuration.authRequest,
-            tokenFromResponse: configuration.tokenFromResponse
+            tokenFromResponse: configuration.tokenFromResponse,
+            ignoreTokenFromState: configuration.ignoreTokenFromTokenManagerState
         )
         self.delegate = DummyURLSessionDataDelegate()
         self.urlSession = URLSession(configuration: configuration.urlSessionConfiguration, delegate: delegate, delegateQueue: nil)
