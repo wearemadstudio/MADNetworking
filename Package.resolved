@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "pulse",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kean/Pulse",
+      "state" : {
+        "revision" : "c102aaa266ac69a26d08ee6861da710283988e3b",
+        "version" : "5.1.2"
+      }
+    }
+  ],
+  "version" : 2
+}

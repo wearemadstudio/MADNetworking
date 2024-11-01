@@ -6,10 +6,10 @@ import PackageDescription
 let package = Package(
     name: "MADNetworking",
     platforms: [
-        .macOS(.v10_13),
-        .iOS(.v13),
-        .tvOS(.v13),
-        .watchOS(.v6),
+        .macOS(.v10_14),
+        .iOS(.v15),
+        .tvOS(.v15),
+        .watchOS(.v10),
         .visionOS(.v1)
     ],
     products: [
@@ -18,11 +18,18 @@ let package = Package(
             name: "MADNetworking",
             targets: ["MADNetworking"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/kean/Pulse", from: "5.1.2")
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "MADNetworking"),
+            name: "MADNetworking",
+            dependencies: [
+                .product(name: "Pulse", package: "Pulse"),
+            ]
+        ),
         .testTarget(
             name: "MADNetworkingTests",
             dependencies: ["MADNetworking"]),

@@ -1,4 +1,5 @@
 import Foundation
+import Pulse
 
 public enum HttpMethod: String {
     case get = "GET"
@@ -54,10 +55,9 @@ public class NetworkService {
     
     private let tokenManager: TokenManager
     private let configuration: NetworkServiceConfiguration
-    private let urlSession: URLSession
+    private let urlSession: URLSessionProxy
     private let decoder: JSONDecoder
     private let log: (LogOutput) -> Void
-    private let delegate: URLSessionDataDelegate
     
     public init(
         configuration: NetworkServiceConfiguration
@@ -68,8 +68,7 @@ public class NetworkService {
             authRequest: configuration.authRequest,
             tokenFromResponse: configuration.tokenFromResponse
         )
-        self.delegate = DummyURLSessionDataDelegate()
-        self.urlSession = URLSession(configuration: configuration.urlSessionConfiguration, delegate: delegate, delegateQueue: nil)
+        self.urlSession = URLSessionProxy(configuration: configuration.urlSessionConfiguration)
         self.decoder = configuration.decoder
         self.log = configuration.log
         
@@ -101,7 +100,7 @@ public class NetworkService {
         prepare(&urlRequest, with: request)
         
         do {
-            let (data, response) = try await urlSession.dataTask(for: urlRequest)
+            let (data, response) = try await urlSession.data(for: urlRequest)
             
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw NetworkError.invalidResponse
