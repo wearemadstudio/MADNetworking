@@ -66,7 +66,8 @@ public class NetworkService {
         self.tokenManager = TokenManager(
             storedToken: configuration.storedToken,
             authRequest: configuration.authRequest,
-            tokenFromResponse: configuration.tokenFromResponse
+            tokenFromResponse: configuration.tokenFromResponse,
+            ignoreTokenFromState: configuration.ignoreTokenFromTokenManagerState
         )
         self.urlSession = URLSessionProxy(configuration: configuration.urlSessionConfiguration)
         self.decoder = configuration.decoder

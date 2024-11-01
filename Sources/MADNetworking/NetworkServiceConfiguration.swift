@@ -9,7 +9,9 @@ public struct NetworkServiceConfiguration {
     public let decoder: JSONDecoder
     
     public let urlSessionConfiguration: URLSessionConfiguration
-    
+
+    public let ignoreTokenFromTokenManagerState: Bool
+
     public let log: (LogOutput) -> Void
     
     public init(
@@ -18,6 +20,7 @@ public struct NetworkServiceConfiguration {
         tokenFromResponse: @escaping (Decodable) -> String?,
         decoder: JSONDecoder,
         urlSessionConfiguration: URLSessionConfiguration,
+        ignoreTokenFromTokenManagerState: Bool,
         log: @escaping (LogOutput) -> Void
     ) {
         self.storedToken = storedToken
@@ -25,6 +28,7 @@ public struct NetworkServiceConfiguration {
         self.tokenFromResponse = tokenFromResponse
         self.decoder = decoder
         self.urlSessionConfiguration = urlSessionConfiguration
+        self.ignoreTokenFromTokenManagerState = ignoreTokenFromTokenManagerState
         self.log = log
     }
 }

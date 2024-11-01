@@ -20,7 +20,8 @@ class TokenManager {
     private let storedToken: () -> String?
     private let authRequest: () async -> (any Requestable & DecodableResponse)?
     private let tokenFromResponse: (Decodable) -> String?
-    
+    private let ignoreTokenFromState: Bool
+
     private var tokenState = TokenState()
     
     private weak var networkService: NetworkService?
@@ -30,11 +31,13 @@ class TokenManager {
     init(
         storedToken: @escaping () -> String?,
         authRequest: @escaping () async -> (any Requestable & DecodableResponse)?,
-        tokenFromResponse: @escaping (Decodable) -> String?
+        tokenFromResponse: @escaping (Decodable) -> String?,
+        ignoreTokenFromState: Bool
     ) {
         self.storedToken = storedToken
         self.authRequest = authRequest
         self.tokenFromResponse = tokenFromResponse
+        self.ignoreTokenFromState = ignoreTokenFromState
     }
     
     // MARK: - Methods
@@ -53,7 +56,7 @@ class TokenManager {
     }
 
     private func fetchToken() async throws -> String? {
-        if let token = await tokenState.token { // We already have a token
+        if !ignoreTokenFromState, let token = await tokenState.token { // We already have a token
             return token
         }
         if let token = storedToken() { // We fetched a token from provider
