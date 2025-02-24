@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "MADNetworking",
     platforms: [
-        .macOS(.v10_14),
+        .macOS(.v13),
         .iOS(.v15),
         .tvOS(.v15),
         .watchOS(.v10),
