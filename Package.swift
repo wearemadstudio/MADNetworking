@@ -19,7 +19,7 @@ let package = Package(
             targets: ["MADNetworking"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/kean/Pulse", from: "5.1.2")
+        .package(url: "https://github.com/kean/Pulse", from: "5.1.3")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
