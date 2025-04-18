@@ -119,7 +119,7 @@ public class NetworkService {
             }
             
             let decodedResponse = try await Task {
-                return try JSONDecoder().decode(T.ResponseType.self, from: data)
+                return try configuration.decoder.decode(T.ResponseType.self, from: data)
             }.value
             return decodedResponse
         } catch let error as URLError where
