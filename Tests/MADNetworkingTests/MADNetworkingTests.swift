@@ -59,6 +59,7 @@ final class MADNetworkingTests: XCTestCase {
                 },
                 decoder: JSONDecoder(),
                 urlSessionConfiguration: .default,
+                ignoreTokenFromTokenManagerState: false,
                 log: { output in
                     print(output.log)
                 }

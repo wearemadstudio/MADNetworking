@@ -12,7 +12,7 @@ public enum HttpMethod: String {
 public protocol Requestable {
     var url: URL { get }
     var method: HttpMethod { get }
-    var headers: [String: String]? { get }
+    var headers: [String: String]? { get set }
     var parameters: Encodable? { get }
     var multipart: MultipartRequest? { get }
 }
