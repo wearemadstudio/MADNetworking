@@ -186,7 +186,7 @@ public class NetworkService {
         case let .hmacSHA256(secret):
             let timestamp = Int(Date().timeIntervalSince1970)
             let urlString = urlRequest.url?.absoluteString
-            let body = urlRequest.httpBody?.sha256
+            let body: String? = request.multipart == nil ? urlRequest.httpBody?.sha256 : nil
             let canonicalString = [urlString, timestamp.description, body].compactMap { $0 }.joined(separator: "|")
             let hmac = canonicalString.hmacSHA256(secret: secret)
             let additionalHeaders: [String: String] = [
