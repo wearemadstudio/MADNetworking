@@ -9,12 +9,18 @@ public enum HttpMethod: String {
     case patch = "PATCH"
 }
 
+public enum RequestSignType {
+    case none
+    case hmacSHA256(secret: String)
+}
+
 public protocol Requestable {
     var url: URL { get }
     var method: HttpMethod { get }
-    var headers: [String: String]? { get set }
+    var headers: [String: String]? { get }
     var parameters: Encodable? { get }
     var multipart: MultipartRequest? { get }
+    var signType: RequestSignType { get }
 }
 
 public extension Requestable {
@@ -174,5 +180,20 @@ public class NetworkService {
             }
         }
         request.headers?.forEach { urlRequest.setValue($1, forHTTPHeaderField: $0) }
+        switch request.signType {
+        case .none:
+            break
+        case let .hmacSHA256(secret):
+            let timestamp = Int(Date().timeIntervalSince1970)
+            let urlString = urlRequest.url?.absoluteString
+            let body = urlRequest.httpBody?.sha256
+            let canonicalString = [urlString, timestamp.description, body].compactMap { $0 }.joined(separator: "|")
+            let hmac = canonicalString.hmacSHA256(secret: secret)
+            let additionalHeaders: [String: String] = [
+                "X-Signature": hmac,
+                "X-Timestamp": timestamp.description
+            ]
+            additionalHeaders.forEach { urlRequest.setValue($1, forHTTPHeaderField: $0) }
+        }
     }
 }

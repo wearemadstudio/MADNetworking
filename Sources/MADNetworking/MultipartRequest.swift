@@ -51,7 +51,7 @@ public struct MultipartRequest {
         "multipart/form-data; boundary=\(boundary)"
     }
 
-    public var httpBody: Data {
+    var httpBody: Data {
         var bodyData = data
         bodyData.append("--\(boundary)--")
         return bodyData

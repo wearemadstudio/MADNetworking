@@ -22,6 +22,7 @@ struct AuthRequest: Requestable & DecodableResponse {
     var method: MADNetworking.HttpMethod { .post }
     var headers: [String : String]? { [:] }
     var parameters: Encodable? { Parameters() }
+    var signType: RequestSignType { .none }
 
     typealias ResponseType = BaseResponseModel<Response>
     
@@ -37,15 +38,13 @@ struct AirportsDetailsRequest: Requestable & DecodableResponse {
     var method: MADNetworking.HttpMethod { .get }
     var headers: [String : String]? { [:] }
     var parameters: Encodable? { EmptyData() }
+    var signType: RequestSignType { .none }
 
     typealias ResponseType = BaseResponseModel<Response>
 }
 
 final class MADNetworkingTests: XCTestCase {
     func simpleTest() async throws {
-        let storedToken: () -> String? = {
-            return nil
-        }
         let authRequest: () -> (any DecodableResponse & Requestable) = {
             return AuthRequest()
         }
